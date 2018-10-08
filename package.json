@@ -18,12 +18,12 @@
   "homepage": "https://github.com/jshou/gcal-events#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-preset-env": "^1.7.0",
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
-    "babel-preset-env": "^1.7.0",
     "jest": "^23.6.0",
     "moment": "^2.22.2",
     "sinon": "^6.3.5"
