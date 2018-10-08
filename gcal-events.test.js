@@ -66,4 +66,29 @@ describe('getEvents', () => {
       expect(params.timeMin).toEqual(moment.utc('1969-12-31').toISOString());
     });
   });
+
+  describe('setting options', () => {
+    let params;
+    let maxResults;
+    let startDay;
+
+    beforeEach(() => {
+      maxResults = 100;
+      startDay = moment.utc('2008-01-01');
+
+      events = getEvents(FAKE_CALENDAR_ID, FAKE_SECRET_KEY, {
+        maxResults,
+        startDay,
+      });
+      params = axiosStub.lastCall.lastArg.params;
+    });
+
+    test('sets maxResults to custom value', () => {
+      expect(params.maxResults).toEqual(100);
+    });
+
+    test('starts on custom date', () => {
+      expect(params.timeMin).toEqual(startDay);
+    });
+  });
 });
