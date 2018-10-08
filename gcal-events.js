@@ -1,6 +1,7 @@
 import { from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import axios from 'axios';
+import moment from 'moment';
 
 const getEvents = (calendarId, calendarSecret, options = {}) => {
   const yesterday = new Date(Date.now() - 864e5); // 864e5 == 86400000 == 24*60*60*1000
@@ -14,9 +15,19 @@ const getEvents = (calendarId, calendarSecret, options = {}) => {
 
   const obs = from(axios.get(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`, { params }));
 
-  return obs.pipe(map((response) => {
-    return response.data.items;
-  }));
+  return obs.pipe(
+    concatMap((response) => {
+      return response.data.items;
+    }),
+    map((event) => {
+      return {
+        start: moment(event.start.dateTime),
+        end: moment(event.end.dateTime),
+        location: event.location,
+        summary: event.summary,
+      };
+    }),
+  );
 };
 
 export {
