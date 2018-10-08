@@ -2,9 +2,9 @@
   "name": "gcal-events",
   "version": "0.1.0",
   "description": "Gets Google Calendar events from a calendar",
-  "main": "index.js",
+  "main": "gcal-events.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/jshou/gcal-events/issues"
   },
-  "homepage": "https://github.com/jshou/gcal-events#readme"
+  "homepage": "https://github.com/jshou/gcal-events#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "rxjs": "^6.3.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "regenerator-runtime": "^0.12.1"
+  }
 }
