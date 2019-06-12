@@ -1,16 +1,17 @@
 import { from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import axios from 'axios';
-import moment from 'moment-timezone';
+import moment from 'moment';
 
-const getEvents = (calendarId, calendarSecret, options = {}) => {
+const getEvents = (calendarId, calendarSecret, options = { timeZone: 'America/Los_Angeles' }) => {
   const yesterday = new Date(Date.now() - 864e5); // 864e5 == 86400000 == 24*60*60*1000
   const params = {
     key: calendarSecret,
     maxResults: options.maxResults || 10,
     orderBy: 'startTime',
     singleEvents: true,
-    timeMin: options.startDay || yesterday.toISOString()
+    timeMin: options.startDay || yesterday.toISOString(),
+    timeZone: options.timeZone,
   };
 
   const obs = from(axios.get(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`, { params }));
