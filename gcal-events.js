@@ -24,6 +24,7 @@ const getEvents = (calendarId, calendarSecret, options = {}) => {
         end: event.end.dateTime,
         location: event.location,
         summary: event.summary,
+        description: event.description,
       };
     }),
   );

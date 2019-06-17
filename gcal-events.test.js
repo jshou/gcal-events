@@ -8,6 +8,7 @@ const FAKE_START_TIME = new Date('2018-09-30T13:30');
 const FAKE_END_TIME = new Date('2018-09-30T16:30');
 const FAKE_SUMMARY = 'Everything is happening RIGHT NOW';
 const FAKE_LOCATION = 'Batcave';
+const FAKE_DESCRIPTION = 'https://batcave.party';
 const SUCCESS_EVENTS = [
   {
     "id": "2gdnagg2iusg63n6vf06pbo69c_20181008T040000Z",
@@ -17,6 +18,7 @@ const SUCCESS_EVENTS = [
     "summary": FAKE_SUMMARY,
     "description": "TBD",
     "location": FAKE_LOCATION,
+    "description": FAKE_DESCRIPTION,
     "start": {
       "dateTime": FAKE_START_TIME.toISOString(),
       "timeZone": "America/Los_Angeles"
@@ -116,6 +118,16 @@ describe('getEvents', () => {
       test('returns location', (done) => {
         events.subscribe((e) => {
           expect(e.location).toEqual(FAKE_LOCATION);
+          done();
+        }, (error) => {
+          console.log(error);
+          done();
+        });
+      });
+
+      test('returns description', done => {
+        events.subscribe((e) => {
+          expect(e.description).toEqual(FAKE_DESCRIPTION);
           done();
         }, (error) => {
           console.log(error);
