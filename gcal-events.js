@@ -1,7 +1,6 @@
 import { from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import axios from 'axios';
-import moment from 'moment-timezone';
 
 const getEvents = (calendarId, calendarSecret, options = {}) => {
   const yesterday = new Date(Date.now() - 864e5); // 864e5 == 86400000 == 24*60*60*1000
@@ -21,8 +20,8 @@ const getEvents = (calendarId, calendarSecret, options = {}) => {
     }),
     map((event) => {
       return {
-        start: moment(event.start.dateTime),
-        end: moment(event.end.dateTime),
+        start: event.start.dateTime,
+        end: event.end.dateTime,
         location: event.location,
         summary: event.summary,
       };

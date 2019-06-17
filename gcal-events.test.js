@@ -1,12 +1,11 @@
 import sinon from 'sinon';
 import axios from 'axios';
-import moment from 'moment-timezone';
 import { getEvents } from './gcal-events';
 
 const FAKE_CALENDAR_ID = 'FAKE_CALENDAR_ID';
 const FAKE_SECRET_KEY = 'FAKE_SECRET_KEY';
-const FAKE_START_TIME = moment('2018-09-30 13:30');
-const FAKE_END_TIME = moment('2018-09-30 16:30');
+const FAKE_START_TIME = new Date('2018-09-30T13:30');
+const FAKE_END_TIME = new Date('2018-09-30T16:30');
 const FAKE_SUMMARY = 'Everything is happening RIGHT NOW';
 const FAKE_LOCATION = 'Batcave';
 const SUCCESS_EVENTS = [
@@ -44,7 +43,7 @@ describe('getEvents', () => {
 
     const resolved = new Promise((r) => r({ data: { items: SUCCESS_EVENTS } }));
     axiosStub = sandbox.stub(axios, 'get').returns(resolved);
-    clock = sinon.useFakeTimers(); // defaults ot Jan 1 1970
+    clock = sinon.useFakeTimers(new Date(1970, 0, 1)); // defaults ot Jan 1 1970
   });
 
   afterEach(() => sandbox.restore());
@@ -79,13 +78,14 @@ describe('getEvents', () => {
     });
 
     test('starts yesterday', () => {
-      expect(params.timeMin).toEqual(moment.utc('1969-12-31').toISOString());
+      const minDate = new Date(params.timeMin).toDateString();
+      expect(minDate).toEqual(new Date(1969, 11, 31).toDateString());
     });
 
     describe('in the response object for each event', () => {
       test('returns date object for event start', (done) => {
         events.subscribe((e) => {
-          expect(e.start.toISOString()).toEqual(FAKE_START_TIME.toISOString());
+          expect(e.start).toEqual(FAKE_START_TIME.toISOString());
           done();
         }, (error) => {
           console.log(error);
@@ -95,7 +95,7 @@ describe('getEvents', () => {
 
       test('returns date object for event end', (done) => {
         events.subscribe((e) => {
-          expect(e.end.toISOString()).toEqual(FAKE_END_TIME.toISOString());
+          expect(e.end).toEqual(FAKE_END_TIME.toISOString());
           done();
         }, (error) => {
           console.log(error);
@@ -132,7 +132,7 @@ describe('getEvents', () => {
 
     beforeEach(() => {
       maxResults = 100;
-      startDay = moment.utc('2008-01-01');
+      startDay = new Date(2008, 0, 1);
 
       events = getEvents(FAKE_CALENDAR_ID, FAKE_SECRET_KEY, {
         maxResults,
